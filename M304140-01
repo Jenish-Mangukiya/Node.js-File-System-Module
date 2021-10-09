@@ -1,0 +1,160 @@
+const readline = require("readline");
+const r1 = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
+const fs = require("fs");
+var instructions = () => {
+        console.log("*******************************");
+        console.log("Wlecome To MJ File System ! ");
+        console.log("1 Create Directory");
+        console.log("2 Remove Directory");
+        console.log("3 Write FIle");
+        console.log("4 Read FIle");
+        console.log("5 Delete FIle");
+        console.log("6 Append data to FIle");
+        console.log("7 Update / Replace file with new data");
+        console.log("8 Rename File");
+        console.log("9 Exit");
+        console.log("*******************************");
+        choice();
+    }
+var choice = () => {
+        r1.question("Enter your choice: ", (ans) => {
+            if (ans === "1") {
+                console.log("*******************************");
+                console.log("Create Directory");
+                console.log("*******************************");
+                createFileWizard();
+            } else if (ans === "2") {
+                console.log("*******************************");
+                console.log("Remove Directory");
+                console.log("*******************************");
+                removeFileWizard();
+            } else if (ans === "3") {
+                console.log("*******************************");
+                console.log("Write File : ");
+                console.log("*******************************");
+                writeFileWizard();
+            } else if (ans === "4") {
+                console.log("*******************************");
+                console.log("Read File : ");
+                console.log("*******************************");
+                readFileWizard();
+            } else if (ans === "5") {
+                console.log("*******************************");
+                console.log("Delete File : ");
+                console.log("*******************************");
+                deleteFileWizard();
+            } else if (ans === "6") {
+                console.log("*******************************");
+                console.log("Append File : ");
+                console.log("*******************************");
+                appendFileWizard();
+            } else if (ans === "7") {
+                console.log("*******************************");
+                console.log("Update OR Replace File : ");
+                console.log("*******************************");
+                updateFileWizard();
+            } else if (ans === "8") {
+                console.log("*******************************");
+                console.log("Rename File : ");
+                console.log("*******************************");
+                renameFileWizard();
+            } else if (ans === "9") {
+                console.log("*******************************");
+                console.log("By.");
+                console.log("*******************************");
+                r1.close();
+            } else {
+                console.log("*******************************");
+                console.log("U wrong choice");
+                console.log("*******************************");
+                instructions();
+            }
+        })
+    }
+instructions();
+var createFileWizard = () => {5
+    r1.question("Enter the name of directory: ", (ans) => {
+        var dir = "./";
+        dir = dir + ans;
+        console.log(dir);
+        fs.mkdir(dir, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
+        console.log("Directory created Succesfully");
+        instructions();
+    });
+};
+var removeFileWizard = () => {
+    r1.question("Enter the name of directory want to delete : ", (ans) => {
+        fs.rmdir(ans, () => {
+            console.log("Directory Deleted");
+            instructions();
+        });
+        console.log("Directory not Found");
+    });
+};
+var writeFileWizard = () => {
+    r1.question("Enter the file name without extention: ", (fname) => {
+        r1.question("Enter the contents of the file : ", (content) => {
+            fs.writeFile(fname + ".txt", content, (err) => {
+                if (err) throw err;
+                console.log("Content Added succesfully");
+                instructions();
+            });
+        });
+    });
+};
+var readFileWizard = () => {
+    r1.question("Enter the file name without extention: ", (fname) => {
+        fs.readFile(fname + ".txt", "utf8", (err, data) => {
+            if (err) throw err;
+            console.log(data);
+            instructions();
+        });
+    });
+};
+var deleteFileWizard = () => {
+        r1.question("Enter the fiename want to delete: ", (fname) => {
+            fs.unlink(fname, (err) => {
+                if (err) throw err;
+                console.log("Deleted Succesfully");
+                instructions();
+            })
+        })
+    }
+var appendFileWizard = () => {
+    r1.question("Enter the filename want to Append: ", (fname) => {
+        r1.question("Enter the contents  want to enter in the file : ", (content) => {
+            fs.appendFile(fname, content, (err) => {
+                if (err) throw err;
+                console.log("Append succesfully");
+                instructions();
+            });
+        });
+    });
+};
+var updateFileWizard = () => {
+    r1.question("Enter the file name want to update or replace  : ", (fname) => {
+        r1.question("Enter the contents of the file : ", (content) => {
+            fs.writeFile(fname + ".txt", content, (err) => {
+                if (err) throw err;
+                console.log("updated succesfully");
+                instructions();
+            });
+        });
+    });
+}
+var renameFileWizard = () => {
+    r1.question("Enter the file name want to rename : ", (fname) => {
+        r1.question("Enter the file name  want to rename your file :", (rename) => {
+            fs.rename(fname, rename, (err) => {
+                if (err) throw err;
+                console.log("Rename succesfully");
+                instructions();
+            });
+        });
+    });
+};
